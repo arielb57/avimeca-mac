@@ -23,7 +23,7 @@ if [ ! -x .venv/bin/python ]; then
     curl -fsSL https://bootstrap.pypa.io/get-pip.py | .venv/bin/python - -q || { echo "Installation de pip impossible."; read -r -p "Entrée"; exit 1; }
   fi
 fi
-if ! .venv/bin/python -c "import cv2" 2>/dev/null; then
-  .venv/bin/python -m pip install -q -r requirements.txt || { echo "Installation d'OpenCV impossible."; read -r -p "Entrée"; exit 1; }
+if ! .venv/bin/python -c "import cv2, matplotlib" 2>/dev/null; then
+  .venv/bin/python -m pip install -q -r requirements.txt || { echo "Installation des dépendances impossible."; read -r -p "Entrée"; exit 1; }
 fi
 exec .venv/bin/python app.py "$@"
