@@ -58,6 +58,7 @@ class App(tk.Tk):
         for i in (1, 2, 3):
             ttk.Radiobutton(bar, text=str(i), value=i, variable=self.track, command=self.show).pack(side=tk.LEFT)
         ttk.Button(bar, text="Exporter…", command=self.export).pack(side=tk.RIGHT)
+        ttk.Button(bar, text="Analyser (Regressi)", command=self.analyse).pack(side=tk.RIGHT, padx=4)
 
         self.canvas = tk.Canvas(self, bg="#222", highlightthickness=0)
         self.canvas.pack(fill=tk.BOTH, expand=True)
@@ -214,6 +215,24 @@ class App(tk.Tk):
         if self.session:
             self.session.delete_point(self.track.get(), self.frame_idx)
             self.show()
+
+    # ---------- analyse ----------
+    def analyse(self):
+        """Ouvre Regressi Mac avec les mesures de la piste courante."""
+        if not self.session:
+            return
+        if not self.session.calibration:
+            messagebox.showwarning("Analyse", "Étalonnez d'abord la vidéo.")
+            return
+        rows = self.session.rows(self.track.get())
+        if len(rows) < 2:
+            messagebox.showwarning("Analyse", "Pointez au moins 2 images sur cette piste.")
+            return
+        import numpy as np
+        from regressi import RegressiWindow
+        a = np.array(rows)
+        RegressiWindow(self, {"t(s)": a[:, 0], "x(m)": a[:, 1], "y(m)": a[:, 2]},
+                       title=f"Regressi Mac — piste {self.track.get()}")
 
     # ---------- export ----------
     def export(self):

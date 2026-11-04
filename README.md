@@ -1,7 +1,7 @@
-# AviMeca Mac
+# AviMeca Mac + Regressi Mac
 
-Équivalent macOS d'**AviMeca** (Windows) : pointage de vidéos image par image pour l'analyse
-de mouvement en physique, avec export texte pour Regressi.
+Équivalents macOS d'**AviMeca** (pointage de vidéos image par image) et de **Regressi**
+(graphiques, vitesses/accélérations, modélisation), deux logiciels Windows de TP de physique.
 
 ## Lancer
 
@@ -21,13 +21,26 @@ puis relancer.
 3. *(optionnel)* **Définir l'origine** : cliquer le point (0, 0). Par défaut : coin bas-gauche, y vers le haut.
 4. Choisir la piste (1 à 3) et cliquer l'objet : le point est enregistré et la vidéo avance d'une image.
    - `←` `→` : image précédente/suivante (`Maj` = 10 images) · `Suppr` : effacer le point de l'image.
-5. **Exporter…** : fichier texte `t(s)  x(m)  y(m)` (un par piste), à ouvrir dans Regressi ou un tableur.
+5. **Exporter…** : fichier texte `t(s)  x(m)  y(m)` (un par piste).
+6. **Analyser (Regressi)** : ouvre directement Regressi Mac avec les mesures de la piste.
+
+## Regressi Mac
+
+Depuis AviMeca (bouton **Analyser**), ou seul : double-cliquer **`Lancer Regressi.command`** puis
+**Ouvrir mesures…** (`.txt` d'AviMeca, ou tout tableau texte/CSV avec une ligne d'en-tête ; virgule décimale acceptée).
+
+- Colonnes calculées automatiquement : `vx`, `vy`, `v`, `ax`, `ay` (différences centrées).
+- Choisir l'abscisse et l'ordonnée (ex. `t` / `y`, `t` / `vy`, `x` / `y`).
+- **Modèle** : linéaire, affine ou parabole → équation et R² affichés, courbe tracée.
+- **Image…** : enregistre le graphique en PNG · **Tableau…** : enregistre toutes les colonnes.
+- Barre d'outils du graphique : zoom, déplacement, coordonnées du curseur.
 
 ## Limites
 
 - Pointage manuel (pas de suivi automatique).
-- Pas d'export `.rw3` natif Regressi ; l'import du `.txt` dans Regressi n'a pas encore été vérifié.
+- Pas de lecture/écriture des fichiers `.rw3` du vrai Regressi.
+- Modèles limités à linéaire, affine, parabole (pas d'exponentielle, sinus… pour l'instant).
 
 ## Tests
 
-`python3 -m unittest test_core -v` (vidéo d'exemple : `AVIMECA_SAMPLE=chemin/video.avi`).
+`python3 -m unittest test_core test_analysis -v` (vidéo d'exemple : `AVIMECA_SAMPLE=chemin/video.avi`).
